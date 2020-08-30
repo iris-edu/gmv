@@ -161,13 +161,13 @@ CREDITS:
     - IRIS DMC Data products Python code conversion.
 
  HISTORY
-     2020-09-03 - Initial public release R.1.1
-     2020-06-01 - Installed Generalized GMV 1.0
-     2015-10-05 - Expanded to include Alaska
-     2013-10-22 - Super GMVs online
-     2011-03-24 - Customized GMV online
-     2010-10-20 - 3-component GMVs online
-     2010-02-25 - GMV online, automated production of GMV started
+ - 2020-09-03 - Initial public release R.1.1
+ - 2020-06-01 - Installed Generalized GMV 1.0
+ - 2015-10-05 - Expanded to include Alaska
+ - 2013-10-22 - Super GMVs online
+ - 2011-03-24 - Customized GMV online
+ - 2010-10-20 - 3-component GMVs online
+ - 2010-02-25 - GMV online, automated production of GMV started
 
  
  COMMENTS/QUESTIONS:
