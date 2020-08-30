@@ -1,0 +1,23 @@
+
+R.1.1 Public release
+
+src/gmv_generalized.py
+    2020-09-03 Manoch: V.2020.209 R1.1 Public release.
+    2020-07-27 Manoch: V.2020.209 added chunking option for data request
+    2020-07-08 Manoch: V.2020.191 added script version to production label
+    2020-07-06 Manoch: V.2020.189 introduced North Polar region and STD water level 
+    2020-05-30 Manoch: V.2020.152 R1 release
+    2020-05-25 Manoch: V.2020.146, Added channel label instead of Primary, ...
+    2020-05-11 Manoch: V.2020.132, Initial release.
+
+src/gmv_para.py
+    2020-09-03 Manoch: V.2020.241 R1.1 Public release.
+    2020-07-27 Manoch: V.2020.209 introduced chunking for data request to enable smaller request chunks.
+    2020-07-06 Manoch: V.2020.189 introduced North Polar region and STD water level
+    2020-05-30 Manoch: V.2020.152 R1 release
+    2020-05-19 Manoch: changed the ref sta from eur and gl coverages
+    2020-05-11 Manoch: Initial release.
+
+src/gmv_utils.py
+    2020-09-03 Manoch: V.2020.241 R1.1 Public release.
+    2020-05-11 Manoch: Initial release.

@@ -1,0 +1,56 @@
+ 
+ Incorporated Research Institutions for Seismology (IRIS)
+ Data Management Center (DMC)
+ Data Products Team
+ Ground Motion Visualization (GMV)
+
+ 2020-09-03
+
+------------------------------------------------------------------------------------------------------------------------
+
+ DESCRIPTION:
+
+An IRIS DMC Python code bundle to produce Ground Motion Visualization (GMV) for different geographical regions,
+sensors, technologies and combined or super GMVs (http://ds.iris.edu/ds/products/usarraygmv-super/).
+Script can be configured via its parameter file (gmv_param.par) or command line arguments.
+Currently parameters are optimized for use with the Lambert conformal map projection and seismic channels.
+Change in projection and/or technology may require additional parameter tuning. The code uses the FDSN Web Services
+(https://www.fdsn.org/webservices/) to retrieve waveform data.
+
+ PYTHON REQUIREMENTS:
+
+       - this bundle has been tested under Python 3.8.3, Anaconda3-2020.07 and macOS 10.14.6.
+
+       - additional required Python module(s): 
+             . obspy         1.2.2
+             . basemap       1.2.1
+             . ffmpeg        4.2.2
+
+ BUNDLE INSTALLATION:
+    - unpack the package
+    - "src" directory contains all the necessary codes. Other directories will be created and populated as required by
+      the package.
+
+ CONFIGURE THE PACKAGE:
+    You should be able to run the package examples without any modifications. However:
+    - if necessary, update the Python path on the first line of the src/gmv_generalized.py
+    - if desired, configure the package by updating src/gmv_param.py file
+
+ PACKAGE TEST:
+    - To test the package, run src/gmv_generalized.py with no arguments (assuming you have properly configured your
+      Python installation) and it will print a USAGE messages. Try the two examples provided under usage to verify
+      the installation
+
+           	src/gmv_generalized.py -e 55.1046,-158.4725 -z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default
+           	src/gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T 'July 22, 2020, Alaska Peninsula, M 7.8' -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
+
+    - Simply run any of the examples provided in the usage message.
+
+CREDITS:
+	- Chuck Ammon, Professor of Geosciences at Penn State’s original concept and visualizations
+	- Bob Woodward at IRIS – adapted the visualization code to MATLAB
+	- IRIS DMC Data products expanded and enhanced the MATLAB code.
+	- IRIS DMC Data products created the Python code based on the code in MATLAB.
+
+
+
