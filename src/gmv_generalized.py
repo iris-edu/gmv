@@ -116,10 +116,10 @@ def usage():
           f'-d, --dur\t\t[default: {param.animation_duration}] Duration of the GMV animation in seconds.{new_line}',
           f'-D, --std\t\t[default: {param.std_max}] Maximum acceptable standard '
           f'deviation for trace vetting.{new_line}',
-          f'-e, --eloc\t\t[*required] Single quoted event location as \'lat,lon\' (example:  \'10.779,-62.907\'). For '
+          f'-e, --eloc\t\t[*required] Double-quoted event location as "lat,lon" (example:  "10.779,-62.907""). For '
           f'multiple events., '
-          f'{new_line}\t\t\tseparate each set by a space (example: \'24.760,-109.890 25.200,-109.870\'. '
-          f'Use of parentheses is optional: \'(24.760,-109.890) (25.200,-109.870)\'.{new_line}',
+          f'{new_line}\t\t\tseparate each set by a space (example: "24.760,-109.890 25.200,-109.870". '
+          f'Use of parentheses is optional: "(24.760,-109.890) (25.200,-109.870)".{new_line}',
           f'-g, --gain\t\t[default: {param.gain}]Trace amplification to generate GMVs. For 3C GMVs, gain is only '
           f'applied to the Z-component.{new_line}',
           f'-G, --gc\t\t[default: {param.draw_great_circle}] raw the great circle path between the event location and '
@@ -127,8 +127,8 @@ def usage():
           f'-l, --tstep\t\t[default: {param.time_step}] Time step in seconds to use for sampling '
           f'traces and create the video. '
           f'Example: -l 2 samples traces every 2 seconds.{new_line}',
-          f'-m, --emag\t\t[*required] Event magnitude. For multiple events, single quoted magnitude list and separate '
-          f'them with  a space (example: -m \'7.3 6.2\'.{new_line}',
+          f'-m, --emag\t\t[*required] Event magnitude. For multiple events, double-quoted magnitude list and separate '
+          f'them with  a space (example: -m "7.3 6.2".{new_line}',
           f'-n, --net\t\t[default: {param.network.replace("*", "all")}] Network(s) to request data from. For '
           f'multiple networks, separate them with comma. '
           f'Use all to request from all networks (example: -n TA OR -n US,TA -n all).{new_line}',
@@ -153,16 +153,19 @@ def usage():
           f'to plot.{new_line}',
           f'-t, --etime\t\t[*required] The event time as YYYY-MM-DDTHH:MM:SS.{new_line}',
           f'-T, --title\t\t[default: based on the event magnitude (-m) and location (-e)] '
-          f'Single quoted GMV title.{new_line}',
+          f'Double-quoted GMV title.{new_line}',
           f'-z, --depth\t\t[*required] Event depth in km.{new_line}',
           f'{new_line}For additional configuration see the parameter file (gmv_param.py)')
-    print("\n\nExample:\n"
-          "\n\t1. Sample request with the least number of arguments:\n\t\tgmv_generalized.py -e 55.1046,-158.4725 "
-          "-z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default"
-          "\n\t2. Sample complete request:\n\t\tgmv_generalized.py --band=LH,BH --comp=1 -n all -t "
-          "2020-07-22T06:12:42 -T "
-          "'July 22, 2020, Alaska Peninsula, M 7.8' -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 "
-          "-s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom"
+    print('\n\nExample:\n'
+          '\n\n\t1. Sample request with the least number of arguments:\n\t\tgmv_generalized.py -e 55.1046,-158.4725 '
+          '-z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default'
+          '\n\n\t2. Sample complete request:\n\t\tgmv_generalized.py --band=LH,BH --comp=1 -n all -t '
+          '2020-07-22T06:12:42 -T '
+          '"July 22, 2020, Alaska Peninsula, M 7.8" -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 '
+          '-s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom'
+          '\n\n\t3. Sample 3C request:\n\t\tgmv_generalized.py --band=LH,BH --comp=3 -n all -t 2020-06-18T12:49:53 -T '
+          '"June 18, 2020, South Of Kermadec Islands, M 7.4" -m 7.4 -z 10.0 -e -33.2938,-177.8383 -r ak '
+          '-d 4129.103856185302 -s 6.0 -p 466.17595138658135 -q 2.5 -g 5 -D 0.05 -G -o GMV_Example_3C'
           )
     print('\n\n\n')
 
@@ -914,6 +917,10 @@ def get_fedcatalog_stations(req_url, req_start, req_end, req_band, req_comp,
 
 # ----- MAIN -----
 q_set = False
+
+if len(sys.argv) <= 1:
+    usage()
+    sys.exit(3)
 
 try:
     options, remainder = getopt.getopt(sys.argv[1:], 'hHvb:c:d:D:e:g:Gi:l:m:n:N:o:p:P:q:r:s:S:t:T:z:',
@@ -2145,7 +2152,7 @@ else:
 if metadata_dir is None:
     utils.print_message('WARN', '\nWill not write metadata file', log_file)
 else:
-    with open(os.path.join(metadata_dir, f'{animation_file_name}.txt').replace(':', ''), 'a') as fp:
+    with open(os.path.join(metadata_dir, f'{animation_file_name}.txt'.replace(':', '')), 'a') as fp:
         fp.write('\n'.join(metadata))
 
 animation_file_name = os.path.join(video_dir, f'{animation_file_name}.mp4'.replace(':', ''))
