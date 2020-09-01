@@ -64,12 +64,12 @@ USAGE:
     -c, --comp		[default: 1] Number of channel components (1 or 3).
     -d, --dur		[default: 2400] Duration of the GMV animation in seconds.
     -D, --std		[default: 0.05] Maximum acceptable standard deviation for trace vetting.
-    -e, --eloc		[*required] Single quoted event location as 'lat,lon' (example:  '10.779,-62.907'). For multiple events., 
-        			separate each set by a space (example: '24.760,-109.890 25.200,-109.870'. Use of parentheses is optional: '(24.760,-109.890) (25.200,-109.870)'.
+    -e, --eloc		[*required] Double-quoted event location as "lat,lon" (example:  "10.779,-62.907"). For multiple events., 
+        			separate each set by a space (example: "24.760,-109.890 25.200,-109.870". Use of parentheses is optional: "(24.760,-109.890) (25.200,-109.870)".
     -g, --gain		[default: 3.0]Trace amplification to generate GMVs. For 3C GMVs, gain is only applied to the Z-component.
     -G, --gc		[default: False] raw the great circle path between the event location and the reference station.
     -l, --tstep             [default: 3.0] Time step in seconds to use for sampling traces and create the video. Example: -l 2 samples traces every 2 seconds.
-    -m, --emag		[*required] Event magnitude. For multiple events, single quoted magnitude list and separate them with  a space (example: -m '7.3 6.2'.
+    -m, --emag		[*required] Event magnitude. For multiple events, double-quoted magnitude list and separate them with  a space (example: -m "7.3 6.2".
     -n, --net		[default: all] Network(s) to request data from. For multiple networks, separate them with comma. Use all to request from all networks (example: -n TA OR -n US,TA -n all).
     -N, --rnet		[default: IW] Network of the reference station.Example -N TA.
     -o, --output	        The output video file name (by default the video will be MP4 format. Example: -o Test_video will output Test_video.mp4.
@@ -80,23 +80,30 @@ USAGE:
     -s, --sizem	        [default: 4.0] Marker (https://matplotlib.org/api/markers_api.html) size in points.
     -S, --rsta		[default: MFID] Reference station code to plot.
     -t, --etime	        [*required] The event time as YYYY-MM-DDTHH:MM:SS.
-    -T, --title	        [default: based on the event magnitude (-m) and location (-e)] Single quoted GMV title.
+    -T, --title	        [default: based on the event magnitude (-m) and location (-e)] Double-quoted GMV title.
     -z, --depth	        [*required] Event depth in km.
  
 For additional configuration, please see the parameter file (gmv_param.py)
 
 
 EXAMPLES:
+   _Note: GMV compilation is very involved. Depending on the duration, number of stations involved and number of
+          channels, a regular GMV production may take between one to two hours. Three-component GMVs may take as much as
+          three hours to complete._
 
 	1. Sample request with the least number of arguments:
 		gmv_generalized.py -e 55.1046,-158.4725 -z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default
-	2. Sample complete request:
-		gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T 'July 22, 2020, Alaska Peninsula, M 7.8' -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
 
+	2. Sample complete request:
+		gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T "July 22, 2020, Alaska Peninsula, M 7.8" -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
+
+	3. Sample 3C request:
+		gmv_generalized.py --band=LH,BH --comp=3 -n all -t 2020-06-18T12:49:53 -T "June 18, 2020, South Of Kermadec Islands, M 7.4" -m 7.4 -z 10.0 -e -33.2938,-177.8383 -r ak -d 4129.103856185302 -s 6.0 -p 466.17595138658135 -q 2.5 -g 5 -D 0.05 -G -o GMV_Example_3C
+		
 SELECTING PARAMETERS:
 
  GMVs are event-based animation and therefore you need to start with the event parameter. As a minimum, you need to 
- provide the fallowing event parametrs:
+ provide the fallowing event parameters:
  
  - location in the form of _latitude,longitude_ using the _-e_ option (-e 55.1046,-158.4725)
  - depth in kilometers using the _-z_ option (-z 10.0)
@@ -122,7 +129,7 @@ them. For example change:
  - To display the great circle path on the animation panel, use the _-G_ option. No value is needed. Just using the _-G_ option turns the great circle path on
  - The _-l_ option allows you to control the time sampling option. By reducing the time step, you will create a smoother animation but at the
    same time you will increase the total size of the animation by including more frames. Sampling of 2-4 second appears to work reasonably well.
- - Sometimes it is desirealbel to limit the number of networks contributing to the animation. The _-n_ allows you to limit data requests only
+ - Sometimes it is desirable to limit the number of networks contributing to the animation. The _-n_ allows you to limit data requests only
    to the list you provide (separate multiple networks with comma). _-n all_ will request data from all available networks. When tuning the GMV,
    use a network with fewer number of stations to allow speedy processing. Once you are happy with the parameters, set the network list to _all_ or desired list.
  - You can select a reference station for display its trace below GMV panel. _-N_ is used to indicate the network of the reference station (see also the _-S_ option below).
@@ -138,7 +145,7 @@ them. For example change:
    very large marker size dominate animation and will distract the viewer. The _proj\_regions_ dictionary provides a reasonable marker size for each region. Howerev, you
    can override this value by using the _-s_ option that provides the marker size in points.
  - Reference station code to plot is provided using the _-S_ option. The station code along with the network code _-N_ option are used for selection of the reference station trace.
- - To override the default animation title that is based on the event magnitude (_-m_) and location (_-e_), use the _-T_ option. This option takes a single quoted GMV title as its argument.
+ - To override the default animation title that is based on the event magnitude (_-m_) and location (_-e_), use the _-T_ option. This option takes a double-quoted GMV title as its argument.
 
 To avoid  making one single large request for data to a data center, it is better to make multiple requests. The parameter _chunck_count_ in the parameter file determines the number of 
 stations per request (chunk) that will be sent to each data center. This number should be adjusted based on the number of station-channels involved 
@@ -173,5 +180,6 @@ CREDITS:
  COMMENTS/QUESTIONS:
 
     Please contact manoch@iris.washington.edu
+
 
 
