@@ -43,13 +43,18 @@ Change in projection and/or technology may require additional parameter tuning. 
       Python installation) and it will print a USAGE messages. Try the the examples provided under usage to verify
       the installation. As indicated above, examples 1 & 2 will take 1-2 hours and example 3 over 3 hours to complete.
 
-	1. Sample request with the least number of arguments:
+    0. A quick (~ 5 minutes) GMV test (not a production run, note how --band, -d and -D are used to make this a quck run)
+       gmv_generalized.py --band=LH --comp=1 -n AK -t 2020-06-18T12:49:53
+       -T "June 18, 2020, South Of Kermadec Islands, M 7.4" -m 7.4 -z 10.0 -e -33.29,-177.84 -r ak -d 1200.0
+       -s 6.0 -p 466.0 -q 2.5 -g 5 -D 0.5 -G -o GMV_Example_Short_Z
+
+	1. Sample run with the least number of arguments:
 		gmv_generalized.py -e 55.1046,-158.4725 -z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default
 
-	2. Sample complete request:
+	2. Sample complete run:
 		gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T "July 22, 2020, Alaska Peninsula, M 7.8" -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
 
-	3. Sample 3C request:
+	3. Sample 3C run:
 		gmv_generalized.py --band=LH,BH --comp=3 -n all -t 2020-06-18T12:49:53 -T "June 18, 2020, South Of Kermadec Islands, M 7.4" -m 7.4 -z 10.0 -e -33.2938,-177.8383 -r ak -d 4129.103856185302 -s 6.0 -p 466.17595138658135 -q 2.5 -g 5 -D 0.05 -G -o GMV_Example_3C
 
     - Simply run any of the examples provided in the usage message.
