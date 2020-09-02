@@ -11,12 +11,13 @@
 
 The Ground Motion Visualization (GMV, http://ds.iris.edu/ds/products/gmv/) is a video-based IRIS DMC data product that 
 illustrates how seismic waves travel away from an earthquake location by animating the normalized recorded wave 
-amplitudes at each seismometer location using colored markers. Color of each marker depicts amplitude of the vertical 
-ground motion, as detected by the station’s seismometer and normalized to its peak amplitude. 
+amplitudes at each seismometer location using colored markers. 
+Color of each marker depicts amplitude of the vertical ground motion, as detected by the station’s seismometer and 
+normalized to its peak amplitude. For seismic channels, either single-component (vertical or Z component) or three-component
+(vertical plus two horizontal components) animations are possible (see http://ds.iris.edu/spud/gmv/18288940).
 
-This Python bundle is the main code behind GMV production at IRIS DMC. GMVs could be produced for different geographical 
-regions and  sensor types. The GMV production script (_gmv\_generalized.py_) can be configured via its parameter 
-file (_gmv\_param.par_) or by command line arguments. Currently parameters are optimized for use with the Lambert 
+This Python bundle is the main code behind GMV production at IRIS DMC (http://ds.iris.edu/ds/newsletter/vol22/no2/522/generalized-gmvs-post-ta-ground-motion-visualizations/). The GMV production script (_gmv\_generalized.py_) can be configured via its parameter 
+file (_gmv\_param.par_) or through command line arguments. Currently parameters are optimized for use with the Lambert 
 conformal map projection and  seismic channels. However, with additional parameter tuning, it is possible to 
 change the projection and/or the sensor technology. The code uses the FDSN Web Services 
 (https://www.fdsn.org/webservices/) to retrieve waveform data from different FDSN data centers 
@@ -27,26 +28,27 @@ This bundle contains the following files:
 
      src/
        gmv_generalized.py
-           - a Python version of the  original MATLAB GMV code that was originally used in GMV
-             production. Calling the code with  -h  displays a list of options available to tune GMV 
+           - This is the main GMV production code. It is a Python version of the original MATLAB code used in GMV
+             production. Calling the code with  -h  optoin displays a list of other options available to tune GMV 
              production. It also provides test examples to run.
           
        gmv_param.py
-           - a Python file that contains all the parameters available for configuring GMV production. All 
-             parameter definitions must follow Python rules. Each parameter group is commented for clarification.
+           - A Python file that contains all GMV parameters. You could modify to customize GMV production. All 
+             parameter definitions in this file must follow Python rules. Each parameter group in this file is 
+             commented for clarification.
      
        - gmv_utils.py—
-           - a Python utility library used by the main script.
+           - A Python utility library used by the main script.
 
 
     CHANGES.txt
-       - a text file containing the history of changes to this bundle
+       - A text file containing the history of changes to this bundle.
 
     INSTALL.txt
-       - installation notes
+       - The installation notes
 
     README.md
-       - this file
+       - This file
 
 
  INSTALLATION:
@@ -56,30 +58,46 @@ This bundle contains the following files:
 
 USAGE:
    
-    gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T 'July 22, 2020, Alaska Peninsula, M 7.8' -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
+    gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T "July 22, 2020, Alaska Peninsula, M 7.8" 
+                       -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 
+                       -G -o GMV_Example_Custom
 
 
     -h  --help		Output this message.
     -v, --verbose           [default: False] Turn on the verbose mode (no value needed).
-    -b, --band		[default: LH,BH] Two-character channel bands to use in GMV production (separate by comma, for example to select from LHZ, BHZ, and HHZ channels, 
-                            use : LH OR LH,BH OR  LH,BH,HH). See band and instrument code in https://ds.iris.edu/ds/nodes/dmc/data/formats/seed-channel-naming/. 
+    -b, --band		[default: LH,BH] Two-character channel bands to use in GMV production (separate by comma, 
+                            for example to select from LHZ, BHZ, and HHZ channels, use : LH OR LH,BH OR  LH,BH,HH). 
+                            See band and instrument code in https://ds.iris.edu/ds/nodes/dmc/data/formats/seed-channel-naming/. 
     -c, --comp		[default: 1] Number of channel components (1: Z direction only, | 3: Z,N,E or Z,1,2 ).
     -d, --dur		[default: 2400] Duration of the GMV animation in seconds.
-    -D, --std		[default: 0.05] Maximum acceptable standard deviation (SD) for trace vetting. Traces with SD larger than this value over a window prior to 
-                            the event's origin time will not be included in animation
-    -e, --eloc		[*required] Event location as lat,lon (example:  10.779,-62.907). For multiple events (super GMV, https://ds.iris.edu/ds/products/usarraygmv-super/), 
-                            the value should be double-quoted and sets separated by a space (example: "24.760,-109.890 25.200,-109.870". Use of parentheses is optional: "(24.760,-109.890) (25.200,-109.870)".
-    -g, --gain		[default: 3.0] Trace amplification to generate GMVs. For 3C GMVs, gain is only applied to the Z-component.
-    -G, --gc		[default: False] Draw the great circle path between the event location and the reference station (no value needed).
-    -l, --tstep             [default: 3.0] Time step in seconds to use for sampling traces and creating the video. Example: -l 2 samples traces every 2 seconds.
-    -m, --emag		[*required] Event magnitude. For multiple events (Super GMV), double-quoted magnitude list and separate them with  a space (example: -m "7.3 6.2".
-    -n, --net		[default: all] Network(s) to request data from. For multiple networks, separate them with comma. Use "all" to request from all networks (example: -n TA OR -n US,TA -n all).
+    -D, --std		[default: 0.05] Maximum acceptable standard deviation (SD) for trace vetting. Traces with SD for a 
+                            window prior to the event's origin time larger than this value will not be included in 
+                            animation ( will reduce blinking effect in GMV).
+    -e, --eloc		[*required] Event location as lat,lon (example:  10.779,-62.907). For multiple events (super GMV, 
+                            https://ds.iris.edu/ds/products/usarraygmv-super/), the value should be double-quoted and 
+                            sets separated by a space (example: "24.760,-109.890 25.200,-109.870". Use of parentheses 
+                            is optional: "(24.760,-109.890) (25.200,-109.870)".
+    -g, --gain		[default: 3.0] Trace amplification to generate GMVs. For 3C GMVs, gain is only applied to the 
+                            Z-component.
+    -G, --gc		[default: False] Draw the great circle path between the event location and the reference station 
+                            (no value needed).
+    -l, --tstep             [default: 3.0] Time step in seconds to use for sampling traces and creating the video. 
+                            Example: -l 2 samples traces every 2 seconds.
+    -m, --emag		[*required] Event magnitude. For multiple events (Super GMV), double-quoted magnitude list and 
+                            separate them with  a space (example: -m "7.3 6.2".
+    -n, --net		[default: all] Network(s) to request data from. For multiple networks, separate them with comma. 
+                            Use "all" to request from all networks (example: -n TA OR -n US,TA -n all).
     -N, --rnet		[default: IW] Network of the reference station. Example -N TA.
-    -o, --output	        The output video file name (by default the video will be in MP4 format). Example: "-o Test_video" will output Test_video.mp4.
+    -o, --output	        The output video file name (by default the video will be in MP4 format). 
+                            Example: "-o Test_video" will output Test_video.mp4.
     -p, --delay	        [default: -20] Delay in seconds from the event origin time to start the video. Example: -p 120.
-    -P, --phase	        [default: 200] Seconds between Phases marked on the trace. This is used to avoid overprinting phase labels. Example -P 30.
-    -q, --qscale	        [default: 4.0] Quiver scale for 3C plots. Number of data units per arrow length unit, e.g., m/s per plot width; a smaller scale parameter makes the arrow longer.
-    -r, --region	        [default: na] The region to create the GMV for. The selected region must be a key of the proj_regions. The acceptable regions are: dict_keys(['af', 'ak', 'am', 'as', 'au', 'aua', 'eur', 'gl', 'np', 'na', 'sa', 'us']).
+    -P, --phase	        [default: 200] Seconds between Phases marked on the trace. This is used to avoid overprinting 
+                            phase labels. Example -P 30.
+    -q, --qscale	        [default: 4.0] Quiver scale for 3C plots. Number of data units per arrow length unit, e.g., 
+                            m/s per plot width; a smaller scale parameter makes the arrow longer.
+    -r, --region	        [default: na] The region to create the GMV for. The selected region must be a key of the 
+                            proj_regions. The acceptable regions are: ['af', 'ak', 'am', 'as', 'au', 'aua', 'eur', 'gl', 
+                            'np', 'na', 'sa', 'us']).
     -s, --sizem	        [default: 4.0] Marker (https://matplotlib.org/api/markers_api.html) size in points.
     -S, --rsta		[default: MFID] Reference station code to plot.
     -t, --etime	        [*required] The event time as YYYY-MM-DDTHH:MM:SS.
@@ -89,19 +107,23 @@ USAGE:
 For additional configuration, please see the parameter file (gmv_param.py)
 
 
-EXAMPLES:
-   _Note: GMV compilation is very involved. Depending on the duration, number of stations involved and number of
-          channels, a regular GMV production may take between one to two hours. Three-component GMVs may take as much as
+EXAMPLES:\
+   _Note: GMV production is very involved. Depending on the duration, number of stations  and number of
+          channels, a regular GMV production may take between one to two hours. Three-component GMVs may more than
           three hours to complete._
 
 	1. Sample request with the least number of arguments:
 		gmv_generalized.py -e 55.1046,-158.4725 -z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default
 
 	2. Sample complete request:
-		gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T "July 22, 2020, Alaska Peninsula, M 7.8" -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
+		gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 
+		-T "July 22, 2020, Alaska Peninsula, M 7.8" -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 
+		-q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
 
 	3. Sample 3C request:
-		gmv_generalized.py --band=LH,BH --comp=3 -n all -t 2020-06-18T12:49:53 -T "June 18, 2020, South Of Kermadec Islands, M 7.4" -m 7.4 -z 10.0 -e -33.2938,-177.8383 -r ak -d 4129.103856185302 -s 6.0 -p 466.17595138658135 -q 2.5 -g 5 -D 0.05 -G -o GMV_Example_3C
+		gmv_generalized.py --band=LH,BH --comp=3 -n all -t 2020-06-18T12:49:53 
+		-T "June 18, 2020, South Of Kermadec Islands, M 7.4" -m 7.4 -z 10.0 -e -33.29,-177.84 -r ak 
+		-d 4129.0 -s 6.0 -p 466.0 -q 2.5 -g 5 -D 0.05 -G -o GMV_Example_3C
 		
 SELECTING PARAMETERS:
 
@@ -111,7 +133,8 @@ SELECTING PARAMETERS:
  - location in the form of _latitude,longitude_ using the _-e_ option (-e 55.1046,-158.4725)
  - depth in kilometers using the _-z_ option (-z 10.0)
  - magnitude using the _-m_ option (-m 7.8). The magnitude lets the script select an optimum filter band to create GMVs
- - time using the _-t_ option (-t 2020-07-22T06:12:42). Time must follow the  yyyy-mm-ssThh24:mm:ss format and must be in UTC time
+ - time using the _-t_ option (-t 2020-07-22T06:12:42). Time must follow the  yyyy-mm-ssThh24:mm:ss format and must be 
+ in UTC time
  
 All other parameters are optional. However, by looking at the default values in the parameter file, you may decide to override 
 them. For example change:
@@ -162,11 +185,11 @@ and the length of each request to avoid memory issues or data center timeouts.
 
 CITATION:
 
-To cite the use of this software reference:
+To cite the use of this software reference:\
 Trabant, C., A. R. Hutko, M. Bahavar, R. Karstens, T. Ahern, and R. Aster (2012), Data Products at the IRIS DMC: Stepping Stones for Research and Other Applications, Seismological Research Letters, 83(5), 846–854, https://doi.org/10.1785/0220120032.
 
-Or cite the following DOI:
-    10.17611/DP/USAGMV.1
+Or cite the following DOI:\
+    doi:10.17611/dp/gmv.code.1
 
 CREDITS:
 
