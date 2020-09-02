@@ -11,20 +11,22 @@
  DESCRIPTION:
 
 An IRIS DMC Python code bundle to produce Ground Motion Visualization (GMV) for different geographical regions,
-sensors, technologies and combined or super GMVs (http://ds.iris.edu/ds/products/usarraygmv-super/).
-Script can be configured via its parameter file (gmv_param.par) or command line arguments.
+sensors. The script can be configured via its parameter file (gmv_param.par) or command line arguments.
 Currently parameters are optimized for use with the Lambert conformal map projection and seismic channels.
 Change in projection and/or technology may require additional parameter tuning. The code uses the FDSN Web Services
 (https://www.fdsn.org/webservices/) to retrieve waveform data.
 
  PYTHON REQUIREMENTS:
 
-       - this bundle has been tested under Python 3.8.3, Anaconda3-2020.07 and macOS 10.14.6.
+       - this bundle has been tested under Python 3.8.3, Anaconda3-2020.07 on macOS 10.14.6, Windows 10.1903, and Linux CentOS7.
 
        - additional required Python module(s): 
              . obspy         1.2.2
-             . basemap       1.2.1
-             . ffmpeg        4.2.2
+             . scipy         1.5.2
+             . numpy         1.19.1
+             . matplotlib    3.3.1
+             . basemap       1.2.2
+             . ffmpeg        4.3.1
 
  BUNDLE INSTALLATION:
     - unpack the package
@@ -32,21 +34,27 @@ Change in projection and/or technology may require additional parameter tuning. 
       the package.
 
  CONFIGURE THE PACKAGE:
-    You should be able to run the package examples without any modifications. However:
+    With Python configured, you should be able to run the package examples without any modifications. However:
     - if necessary, update the Python path on the first line of the src/gmv_generalized.py
     - if desired, configure the package by updating src/gmv_param.py file
 
  PACKAGE TEST:
-    - To test the package, run src/gmv_generalized.py with no arguments (assuming you have properly configured your
-      Python installation) and it will print a USAGE messages. Try the two examples provided under usage to verify
-      the installation
+    - To test the package, run src/gmv_generalized.py with -h option (assuming you have properly configured your
+      Python installation) and it will print a USAGE messages. Try the the examples provided under usage to verify
+      the installation. As indicated above, examples 1 & 2 will take 1-2 hours and example 3 over 3 hours to complete.
 
-           	src/gmv_generalized.py -e 55.1046,-158.4725 -z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default
-           	src/gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T 'July 22, 2020, Alaska Peninsula, M 7.8' -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
+	1. Sample request with the least number of arguments:
+		gmv_generalized.py -e 55.1046,-158.4725 -z 10.0 -m 7.8 -t 2020-07-22T06:12:42 -o GMV_Example_Default
+
+	2. Sample complete request:
+		gmv_generalized.py --band=LH,BH --comp=1 -n all -t 2020-07-22T06:12:42 -T "July 22, 2020, Alaska Peninsula, M 7.8" -m 7.8 -z 10.0 -e 55.1046,-158.4725 -r ak -d 1200 -s 6.0 -p -180 -q 3.5 -g 3 -D 0.05 -G -o GMV_Example_Custom
+
+	3. Sample 3C request:
+		gmv_generalized.py --band=LH,BH --comp=3 -n all -t 2020-06-18T12:49:53 -T "June 18, 2020, South Of Kermadec Islands, M 7.4" -m 7.4 -z 10.0 -e -33.2938,-177.8383 -r ak -d 4129.103856185302 -s 6.0 -p 466.17595138658135 -q 2.5 -g 5 -D 0.05 -G -o GMV_Example_3C
 
     - Simply run any of the examples provided in the usage message.
 
-CREDITS:
+ CREDITS:
 	- Chuck Ammon, Professor of Geosciences at Penn State’s original concept and visualizations
 	- Bob Woodward at IRIS – adapted the visualization code to MATLAB
 	- IRIS DMC Data products expanded and enhanced the MATLAB code.

@@ -1,6 +1,6 @@
- Incorporated Research Institutions for Seismology (IRIS)
- Data Management Center (DMC)
- Data Products Team
+ Incorporated Research Institutions for Seismology (IRIS)\
+ Data Management Center (DMC)\
+ Data Products Team\
  Ground Motion Visualization (GMV)
 
  2020-09-03
@@ -14,27 +14,28 @@ illustrates how seismic waves travel away from an earthquake location by animati
 amplitudes at each seismometer location using colored markers. Color of each marker depicts amplitude of the vertical 
 ground motion, as detected by the station’s seismometer and normalized to its peak amplitude. 
 
-This Python bundle is the main code used to produce such GMVs for different geographical regions, sensors, technologies 
-The GMV production script (_gmv\_generalized.py_) can be configured via its parameter file (_gmv\_param.par_) or 
-command line arguments. Currently parameters are optimized for use with the Lambert conformal map projection and 
-seismic channels but with additional parameter tuning it is possible to change projection and/or technology. The code 
-uses the FDSN Web Services (https://www.fdsn.org/webservices/) to retrieve waveform data from different FDSN data 
-centers (https://service.iris.edu/irisws/fedcatalog/1/datacenters).
+This Python bundle is the main code behind GMV production at IRIS DMC. GMVs could be produced for different geographical 
+regions and  sensor types. The GMV production script (_gmv\_generalized.py_) can be configured via its parameter 
+file (_gmv\_param.par_) or by command line arguments. Currently parameters are optimized for use with the Lambert 
+conformal map projection and  seismic channels. However, with additional parameter tuning, it is possible to 
+change the projection and/or the sensor technology. The code uses the FDSN Web Services 
+(https://www.fdsn.org/webservices/) to retrieve waveform data from different FDSN data centers 
+(https://service.iris.edu/irisws/fedcatalog/1/datacenters).
 
 
 This bundle contains the following files:
 
      src/
-       _gmv\_generalized.py_
+       gmv_generalized.py
            - a Python version of the  original MATLAB GMV code that was originally used in GMV
-             production. Calling the code without any parameters displays a list of options available to tune GMV 
-             production. It also provides two examples to run.
+             production. Calling the code with  -h  displays a list of options available to tune GMV 
+             production. It also provides test examples to run.
           
-       _gmv\_param.py_
-           - a Python file contains all the parameters available to configure GMV production. All 
+       gmv_param.py
+           - a Python file that contains all the parameters available for configuring GMV production. All 
              parameter definitions must follow Python rules. Each parameter group is commented for clarification.
      
-       - _gmv\_utils.py_—
+       - gmv_utils.py—
            - a Python utility library used by the main script.
 
 
@@ -59,20 +60,22 @@ USAGE:
 
 
     -h  --help		Output this message.
-    -v, --verbose           [default: False] Turn on the verbose mode.
-    -b, --band		[default: LH,BH] Channel bands to use for GMV production (separate by comma, for example: LH OR LH,BH OR  LH,BH,HH).
-    -c, --comp		[default: 1] Number of channel components (1 or 3).
+    -v, --verbose           [default: False] Turn on the verbose mode (no value needed).
+    -b, --band		[default: LH,BH] Two-character channel bands to use in GMV production (separate by comma, for example to select from LHZ, BHZ, and HHZ channels, 
+                            use : LH OR LH,BH OR  LH,BH,HH). See band and instrument code in https://ds.iris.edu/ds/nodes/dmc/data/formats/seed-channel-naming/. 
+    -c, --comp		[default: 1] Number of channel components (1: Z direction only, | 3: Z,N,E or Z,1,2 ).
     -d, --dur		[default: 2400] Duration of the GMV animation in seconds.
-    -D, --std		[default: 0.05] Maximum acceptable standard deviation for trace vetting.
-    -e, --eloc		[*required] Double-quoted event location as "lat,lon" (example:  "10.779,-62.907"). For multiple events., 
-        			separate each set by a space (example: "24.760,-109.890 25.200,-109.870". Use of parentheses is optional: "(24.760,-109.890) (25.200,-109.870)".
-    -g, --gain		[default: 3.0]Trace amplification to generate GMVs. For 3C GMVs, gain is only applied to the Z-component.
-    -G, --gc		[default: False] raw the great circle path between the event location and the reference station.
-    -l, --tstep             [default: 3.0] Time step in seconds to use for sampling traces and create the video. Example: -l 2 samples traces every 2 seconds.
-    -m, --emag		[*required] Event magnitude. For multiple events, double-quoted magnitude list and separate them with  a space (example: -m "7.3 6.2".
-    -n, --net		[default: all] Network(s) to request data from. For multiple networks, separate them with comma. Use all to request from all networks (example: -n TA OR -n US,TA -n all).
-    -N, --rnet		[default: IW] Network of the reference station.Example -N TA.
-    -o, --output	        The output video file name (by default the video will be MP4 format. Example: -o Test_video will output Test_video.mp4.
+    -D, --std		[default: 0.05] Maximum acceptable standard deviation (SD) for trace vetting. Traces with SD larger than this value over a window prior to 
+                            the event's origin time will not be included in animation
+    -e, --eloc		[*required] Event location as lat,lon (example:  10.779,-62.907). For multiple events (super GMV, https://ds.iris.edu/ds/products/usarraygmv-super/), 
+                            the value should be double-quoted and sets separated by a space (example: "24.760,-109.890 25.200,-109.870". Use of parentheses is optional: "(24.760,-109.890) (25.200,-109.870)".
+    -g, --gain		[default: 3.0] Trace amplification to generate GMVs. For 3C GMVs, gain is only applied to the Z-component.
+    -G, --gc		[default: False] Draw the great circle path between the event location and the reference station (no value needed).
+    -l, --tstep             [default: 3.0] Time step in seconds to use for sampling traces and creating the video. Example: -l 2 samples traces every 2 seconds.
+    -m, --emag		[*required] Event magnitude. For multiple events (Super GMV), double-quoted magnitude list and separate them with  a space (example: -m "7.3 6.2".
+    -n, --net		[default: all] Network(s) to request data from. For multiple networks, separate them with comma. Use "all" to request from all networks (example: -n TA OR -n US,TA -n all).
+    -N, --rnet		[default: IW] Network of the reference station. Example -N TA.
+    -o, --output	        The output video file name (by default the video will be in MP4 format). Example: "-o Test_video" will output Test_video.mp4.
     -p, --delay	        [default: -20] Delay in seconds from the event origin time to start the video. Example: -p 120.
     -P, --phase	        [default: 200] Seconds between Phases marked on the trace. This is used to avoid overprinting phase labels. Example -P 30.
     -q, --qscale	        [default: 4.0] Quiver scale for 3C plots. Number of data units per arrow length unit, e.g., m/s per plot width; a smaller scale parameter makes the arrow longer.
@@ -139,22 +142,27 @@ them. For example change:
  - Quivers are used to depict horizontal motions when creating 3-component animations. The _-q_ option provides the number of data units per arrow 
    length unit, e.g., m/s per plot width; a smaller scale parameter makes the arrow longer.
  - To indicate the region for which the GMV should be created, use the _-r_ option. The selected region must be a key of the _proj\_regions_ dictionary in the param file. 
+   See the parameter file for definition of the existing regions.
    The acceptable regions are: dict_keys(['af', 'ak', 'am', 'as', 'au', 'aua', 'eur', 'gl', 'np', 'na', 'sa', 'us']. You can define your own region by adding it to
    the _proj\_regions_ dictionary.
- - Marker size for stations should be selected proportional to the region. Selecting very small markers will make it difficult to correlate wave passage between stations and 
-   very large marker size dominate animation and will distract the viewer. The _proj\_regions_ dictionary provides a reasonable marker size for each region. Howerev, you
+ - Marker size for stations should be selected proportional to the region. Selecting very small markers will make it difficult to correlate station marker colors  and 
+   very large marker size will dominate animation and  distract the viewer. The _proj\_regions_ dictionary provides a reasonable marker size for each region. Howerev, you
    can override this value by using the _-s_ option that provides the marker size in points.
- - Reference station code to plot is provided using the _-S_ option. The station code along with the network code _-N_ option are used for selection of the reference station trace.
- - To override the default animation title that is based on the event magnitude (_-m_) and location (_-e_), use the _-T_ option. This option takes a double-quoted GMV title as its argument.
+ - Reference station code to plot is provided using the _-S_ option. The station code along with the network code _-N_ option are used for selection of the reference station trace that is plotted below the animation pane.
+ - To override the default animation title that is based on the event magnitude (_-m_) and location (_-e_), use the _-T_ option. This option takes a double-quoted GMV title as its value.
 
-To avoid  making one single large request for data to a data center, it is better to make multiple requests. The parameter _chunck_count_ in the parameter file determines the number of 
+NOTES:
+
+- GMV generation, depending on the duration, number of stations  and number of channels, may take between one to two hours. Three-component GMVs may take as much as three hours to complete. Always start with a small duration for GMV and a small number of station to create GMV quickly. Tune the production parameters and then go for the actual production run.
+          
+- GMV production often requires many individual traces. To avoid  making one single large request for data, it is better to break data request to data centers to make multiple smaller requests. The parameter _chunck_count_ in the parameter file controls the number of 
 stations per request (chunk) that will be sent to each data center. This number should be adjusted based on the number of station-channels involved 
 and the length of each request to avoid memory issues or data center timeouts.
 
 
 CITATION:
 
-To cite the use of this software please cite:
+To cite the use of this software reference:
 Trabant, C., A. R. Hutko, M. Bahavar, R. Karstens, T. Ahern, and R. Aster (2012), Data Products at the IRIS DMC: Stepping Stones for Research and Other Applications, Seismological Research Letters, 83(5), 846–854, https://doi.org/10.1785/0220120032.
 
 Or cite the following DOI:
@@ -180,6 +188,5 @@ CREDITS:
  COMMENTS/QUESTIONS:
 
     Please contact manoch@iris.washington.edu
-
 
 
