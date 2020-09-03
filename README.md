@@ -17,7 +17,7 @@ normalized to its peak amplitude. For seismic channels, either single-component 
 (vertical plus two horizontal components) animations are possible (see http://ds.iris.edu/spud/gmv/18288940).
 
 This Python bundle is the main code behind GMV production at IRIS DMC (http://ds.iris.edu/ds/newsletter/vol22/no2/522/generalized-gmvs-post-ta-ground-motion-visualizations/). The GMV production script (_gmv\_generalized.py_) can be configured via its parameter 
-file (_gmv\_param.par_) or through command line arguments. Currently parameters are optimized for use with the Lambert 
+file (_gmv\_param.py_) or through command line arguments. Currently parameters are optimized for use with the Lambert 
 conformal map projection and  seismic channels. However, with additional parameter tuning, it is possible to 
 change the projection and/or the sensor technology. The code uses the FDSN Web Services 
 (https://www.fdsn.org/webservices/) to retrieve waveform data from different FDSN data centers 
@@ -202,8 +202,8 @@ Or cite the following DOI:\
 
 CREDITS:
 
-    - Chuck Ammon, Professor of Geosciences at Penn State’s original concept and visualizations.
-    - Bob Woodward at IRIS – adapted the visualization code to MATLAB.
+    - Chuck Ammon, Professor of Geosciences at Penn State original concept and visualizations.
+    - Bob Woodward at IRIS - adapted the visualization code to MATLAB.
     - IRIS DMC Data products expanded and enhanced the MATLAB code.
     - IRIS DMC Data products Python code conversion.
 
