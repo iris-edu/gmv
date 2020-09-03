@@ -42,14 +42,14 @@ import gmv_param as param
     
     This is a Python version of the  Ground Motion Visualization (http://ds.iris.edu/ds/products/gmv/) code in MATLAB:
     Credits
-          - Chuck Ammon, Professor of Geosciences at Penn State’s original concept and visualizations.
-          - Bob Woodward at IRIS – adapted the visualization code to MATLAB.
+          - Chuck Ammon, Professor of Geosciences at Penn State original concept and visualizations.
+          - Bob Woodward at IRIS - adapted the visualization code to MATLAB.
           - IRIS DMC Data products expanded and enhanced the MATLAB code.
 
     This script is capable of producing GMVs for different geographical regions, different sensor technologies and 
     combined or super GMVs (http://ds.iris.edu/ds/products/usarraygmv-super/).
 
-    Script can be configured via its parameter file gmv_param.par or via the command line arguments. Currently
+    Script can be configured via its parameter file gmv_param.py or via the command line arguments. Currently
     parameters are optimized for use with  Lambert conformal map projection and seismic channels. Change in projection
     and/or technology may require parameter tuning.
 
@@ -95,13 +95,13 @@ def usage():
           f'network of seismic stations for which data are openly available and are collected using the federated '
           f'data access.http://ds.iris.edu/ds/products/gmv/'
           f'Credits:{new_line}'
-          f'\t- Chuck Ammon, Professor of Geosciences at Penn State’s original concept and visualizations{new_line}'
-          f'\t- Bob Woodward at IRIS – adapted the visualization code to MATLAB{new_line}'
+          f'\t- Chuck Ammon, Professor of Geosciences at Penn State original concept and visualizations{new_line}'
+          f'\t- Bob Woodward at IRIS - adapted the visualization code to MATLAB{new_line}'
           f'\t- IRIS DMC Data products expanded and enhanced the MATLAB code.{new_line}{new_line}'
           f'This script is capable of producing GMVs for different geographical regions, sensors, technologies'
           f'{new_line}'
           f'and combined or super GMVs (http://ds.iris.edu/ds/products/usarraygmv-super/).{new_line}'
-          f'Script can be configured via its parameter file (gmv_param.par) or command line arguments. '
+          f'Script can be configured via its parameter file (gmv_param.py) or command line arguments. '
           f'{new_line}'
           f'Currently parameters are optimized for use with the Lambert conformal map projection and seismic '
           f'channels.{new_line}'
