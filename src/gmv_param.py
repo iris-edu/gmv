@@ -234,9 +234,6 @@ min_trace_length = 300  # 5 minutes
 spatial_resolution = 1.0
 grid_method = 'nearest'
 
-# Map generating script.
-map_script = '/products/usarraygmv/production/bin/equidistantAzimuthal_g'
-
 # List of seismic phases to calculate travel times for
 phase_list = 'P,p,Pn,Pg,Pdiff,pPdiff,sPdiff,PcP,PP,PP,PS,PKP,SKS,S,s,Sn,Sg,Sdiff,pSdiff,sSdiff,SP,ScS,SS,SKS'
 
