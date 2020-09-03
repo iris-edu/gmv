@@ -11,7 +11,7 @@
  DESCRIPTION:
 
 An IRIS DMC Python code bundle to produce Ground Motion Visualization (GMV) for different geographical regions,
-sensors. The script can be configured via its parameter file (gmv_param.par) or command line arguments.
+sensors. The script can be configured via its parameter file (gmv_param.py) or command line arguments.
 Currently parameters are optimized for use with the Lambert conformal map projection and seismic channels.
 Change in projection and/or technology may require additional parameter tuning. The code uses the FDSN Web Services
 (https://www.fdsn.org/webservices/) to retrieve waveform data.
