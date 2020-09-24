@@ -1087,8 +1087,6 @@ else:
     subplot_trace_rows = round(subplot_rows * float(trace_height / figure_height))
     subplot_map_rows = subplot_rows - subplot_trace_rows
 
-# This is a test query! In the actual query we must be able to ask for multiple channels and internally use a
-# channel priority system to select channels and discard the rest so we do not spend time to do pre-processing.
 url_fedcatalog_request = f'http://service.iris.edu/irisws/fedcatalog/1/query?net={request_net}&sta=*&loc=*&' \
     f'cha=CHAN&targetservice=dataselect&level=channel&format=request&' \
     f'startbefore=START&endafter=END&' \
