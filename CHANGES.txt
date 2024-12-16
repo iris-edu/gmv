@@ -2,6 +2,7 @@
 R.1.1 Public release
 
 src/gmv_generalized.py
+    2024-12-R16Manoch: V.2024.351 R1.2 bug fix for crash caused by an empty trace.
     2020-09-03 Manoch: V.2020.209 R1.1 Public release.
     2020-07-27 Manoch: V.2020.209 added chunking option for data request
     2020-07-08 Manoch: V.2020.191 added script version to production label

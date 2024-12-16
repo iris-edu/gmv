@@ -1422,7 +1422,16 @@ for cat_index, catalog in enumerate(catalog_list):
             net_sta_key = '{}.{}'.format(tr.stats.network, tr.stats.station)
 
             # NOTE: Revise later for a better check.
-            if trace_times[-1] - trace_times[0] < min_trace_length:
+            # No data for any station.
+            if not trace_times:
+                utils.print_message(
+                    "INFO",
+                    f"Skipped, channel {tr.stats.channel} of Net.Sta {net_sta_key} from {dc}, no data",
+                    log_file,
+                )
+                continue
+            # Trace too short
+            elif trace_times[-1] - trace_times[0] < min_trace_length:
                 utils.print_message('INFO', 'Skipped, channel {} of Net.Sta {} from {} because it is shorter than {} s'
                                     .format(tr.stats.channel, net_sta_key, dc, min_trace_length), log_file)
                 continue
